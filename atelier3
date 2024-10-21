@@ -1,0 +1,54 @@
+#include <iostream>
+#include <string>
+
+class Voiture {
+private:
+    std::string marque;
+    std::string modele;
+    int annee;
+    float kilometrage;
+    float vitesse;
+
+public:
+Voiture():marque("new"),modele("new"),annee(0),kilometrage(0.0),vitesse(0.0){}
+
+ Voiture(const std::string& m, const std::string& mo, int a, float k, float v) : marque(m), modele(mo), annee(a), kilometrage(k), vitesse(v) {}
+
+void accelerer(float valeur) {
+        vitesse += valeur;
+    }
+
+    void freiner(float valeur) {
+        if (vitesse - valeur < 0) {
+            vitesse = 0;
+        } else {
+            vitesse -= valeur;
+        }
+    }
+
+void afficherInfo() const {
+        std::cout << "Marque: "<< marque << std::endl;
+        std::cout << "Modèle: "<< modele << std::endl;
+        std::cout << "Année: "<< annee << std::endl;
+        std::cout << "Kilométrage: "<< kilometrage<< std::endl;
+        std::cout << "Vitesse: "<< vitesse << std::endl;
+    }
+ void avancer(float distance) {
+        kilometrage += distance;
+    }
+
+~Voiture() {
+        std::cout << "La voiture " << marque << " est détruite." << std::endl;
+    }
+};
+
+int main() {
+    Voiture Voiture("mercedes", "Mercedes-Benz G-Class", 2002, 15000, 0);
+    maVoiture.afficherInfo();
+    maVoiture.accelerer(50);
+    maVoiture.avancer(100);
+    maVoiture.freiner(20);
+    maVoiture.afficherInfo();
+
+    return 0;
+}
