@@ -43,7 +43,7 @@ void afficherInfo() const {
 };
 
 int main() {
-    Voiture Voiture("mercedes", "Mercedes-Benz G-Class", 2002, 15000, 0);
+    Voiture Voiture("mercedes", "Mercedes-Benz G-Class", 2002, 20000, 0);
     maVoiture.afficherInfo();
     maVoiture.accelerer(50);
     maVoiture.avancer(100);
