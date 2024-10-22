@@ -45,9 +45,9 @@ void afficherInfo() const {
 int main() {
     Voiture Voiture("mercedes", "Mercedes-Benz G-Class", 2002, 20000, 0);
     maVoiture.afficherInfo();
-    maVoiture.accelerer(50);
-    maVoiture.avancer(100);
-    maVoiture.freiner(20);
+    maVoiture.accelerer(20);
+    maVoiture.avancer(500);
+    maVoiture.freiner(10);
     maVoiture.afficherInfo();
 
     return 0;
