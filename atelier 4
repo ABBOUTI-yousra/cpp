@@ -1,0 +1,805 @@
+exercice 1:
+
+#include<iostream>
+
+using namespace std;
+
+class complexe{
+    private:
+    int Reel;
+    int Imaginaire;
+
+    public:
+    
+        complexe( int R=0, int I=0) : Reel(R), Imaginaire(I) {} //constructeur
+        
+        void display(){
+            cout<< Reel << "+"<< Imaginaire<<"i"<<endl;
+        }
+        
+
+    // surcharge des operateur
+    bool operator==(const complexe &sec) const {
+        return (Reel == sec.Reel) && (Imaginaire == sec.Imaginaire);
+    }
+
+    
+    complexe operator+(const complexe &sec) const {
+        return complexe(Reel + sec.Reel, Imaginaire + sec.Imaginaire);
+    }
+
+    
+    complexe operator-(const complexe &sec) const {
+        return complexe(Reel - sec.Reel, Imaginaire - sec.Imaginaire);
+    }
+
+  
+    complexe operator*(const complexe &sec) const {
+        return complexe(Reel * sec.Reel - Imaginaire * sec.Imaginaire,Reel * sec.Imaginaire + Imaginaire *sec.Reel);
+    }
+
+    
+    complexe operator/(const complexe &sec) const {
+        double denominateur = sec.Reel * sec.Reel + sec.Imaginaire * sec.Imaginaire;
+        if (denominateur == 0) {
+            throw invalid_argument(" zéro !");
+        }
+        double PartieReel = (Reel * sec.Reel + Imaginaire * sec.Imaginaire) / denominateur;
+        double PartieImag = (Imaginaire * sec.Reel -Reel * -sec.Imaginaire) / denominateur;
+        return complexe(PartieReel, PartieImag);
+    }
+
+
+};
+
+
+ 
+ int main(){
+    //demander a l'utilisateur d'entrer les partie reels et imaginaires de chaque objet
+  int R,I;
+    cout<<"veuillez entrez la partie reel 1:";
+    cin>> R;
+    cout<< "vuiellez entrez la partie imaginaitre 1:";
+    cin>> I ;
+
+    int R2,I2;
+    cout<<"veuillez entrez la partie reel 2:";
+    cin>> R2;
+    cout<< "vuiellez entrez la partie imaginaitre 2 :";
+    cin>> I2 ;
+
+   complexe nbr1(R,I);
+    complexe nbr2(R2,I2);
+
+    nbr1.display();
+    nbr2.display();
+    //le menu des choix
+    int choix;
+    cout << "\nMenu des opérations :\n";
+    cout << "1. Égalité\n";
+    cout << "2. Addition\n";
+    cout << "3. Soustraction\n";
+    cout << "4. Multiplication\n";
+    cout << "5. Division\n";
+    cout << "Choisissez une opération : ";
+    cin >> choix;
+
+    
+        switch (choix) {
+            case 1:
+                if (nbr1 == nbr2) {
+                    cout << "Les nombres sont égaux.\n";
+                } else {
+                    cout << "Les nombres ne sont pas égaux.\n";
+                }
+                break;
+            case 2:
+                cout << "l'addition : ";
+                (nbr1 + nbr2).display();
+                cout << endl;
+                break;
+            case 3:
+                cout << " la soustraction : ";
+                (nbr1 - nbr2).display();
+                cout << endl;
+                break;
+            case 4:
+                cout << "la multiplication : ";
+                (nbr1 * nbr2).display();
+                cout << endl;
+                break;
+            case 5:
+                cout << " la division : ";
+                (nbr1 / nbr2).display();
+                cout << endl;
+                break;
+            default:
+                cout << "Choix invalide.\n";
+                break;
+        }
+     
+
+    return 0;
+}
+
+exercice 2 :
+#include <iostream>
+#include <string>
+using namespace std;
+
+
+class Animal {
+protected:
+    string nom;
+    int age;
+
+public:
+   
+    void set_value(string n, int a) {
+        nom = n;
+        age = a;
+    }
+
+    
+    virtual void display_info() const = 0; 
+};
+
+
+class Zebra : public Animal {
+public:
+    
+    void display_info() const override {
+        cout << "Nom : " << nom << ", Âge : " << age << " ans" << endl;
+        cout << "  -Ils se trouvent principalement en Afrique centrale et australe." << endl;
+    }
+};
+
+
+class Dolphin : public Animal {
+public:
+    
+    void display_info() const override {
+        cout << "Nom : " << nom << ", Âge : " << age << " ans" << endl;
+        cout << " -Les dauphins appartiennent au sous-ordre des Odontoceti  " << endl;
+    }
+};
+
+int main() {
+    
+    Zebra Zebra;
+    Zebra.set_value("lily", 2);
+    Zebra.display_info();    
+    cout << endl;
+
+    
+    Dolphin eDolphin ;
+    Dolphin.set_value("dio", 15); 
+    Dolphin.display_info();       
+
+    return 0;
+}
+
+exercice 3:
+#include<iostream>
+#include<string>
+
+using namespace std;
+
+class personne{
+    private:
+    string Nom;
+    string Prenom;
+    string DateDeNaissance;
+
+    public:
+
+    personne( const string& N ,const string& P,const string& D): Nom(N) , Prenom(P), DateDeNaissance(D){}
+
+    virtual void Afficher() const{
+        cout << "le nome et prenom :"<< Nom << " " << Prenom <<endl;
+        cout << "la date de nissance : " << DateDeNaissance<<endl ;
+    }
+
+
+};
+
+class employe : public personne{
+    private:
+    
+    double Salaire;
+
+    public:
+
+    employe( const string& N ,const string& P, const string& D ,double S): personne(N,P,D), Salaire(S){}
+     void Afficher()  const override {
+        personne::Afficher();
+        cout <<"le saliare : " << Salaire<<endl;
+    }
+     double getSalaire() const { return Salaire; }
+    void setSalaire(double sal) { Salaire = sal; }
+};
+
+class chef : public employe{
+    private:
+    
+    string Service;
+
+    public:
+
+    chef(const string& N ,const string& P, const string& D ,  double S, const string& SE): employe(N,P,D,S), Service(SE){}
+     void Afficher() const override {
+        employe :: Afficher();
+        cout<<"le service :" << Service << endl ;
+    }
+    string getService() const { return Service; }
+    void setService(const string& serv) { Service = serv; }
+
+};
+
+class Directeur : public chef{
+    private:
+    
+    string Societe;
+
+    public:
+
+    Directeur(const string& N ,const string& P, const string& D ,  double S, const string& SE, const string& SO): chef(N,P,D,S,SE),Societe(SO){}
+     void Afficher() const override {
+        chef :: Afficher();
+        cout << "la societe : "<< Societe << endl;
+    }
+    string getSociete() const { return Societe; }
+    void setSociete(const string& soc) { Societe = soc; }
+    
+};
+
+int main(){
+
+   personne personne1("luis","ronad","2004-9");
+    personne1.Afficher();
+
+     cout<< endl; 
+
+    employe employe1("Moahmmed","bader","1999-8",4000);
+    employe1.Afficher();
+
+     cout<< endl;
+
+     chef chef1("ilyass","ronad","2004-8",4000,"cm");
+    chef1.Afficher();
+
+     cout<< endl;
+
+   Directeur Directeur1("anwar","louich","1996-7",400,"cm","manager");
+    Directeur1.Afficher();
+
+
+
+}
+
+exercice 4 :
+
+#include<iostream>
+#include<vector>
+#include<iterator>
+#include<cmath>
+
+using namespace std;
+
+
+
+class Vecteur3D {
+private:
+    int x, y, z; 
+
+public:
+    
+    Vecteur3D(int x_v=0, int y_v=0, int z_v=0) : x(x_v), y(y_v), z(z_v) {}
+
+    
+    void afficher()  {
+        cout << "(" << x << ", " << y << ", " << z << ")" << endl;
+    }
+    
+    Vecteur3D Somme( Vecteur3D& sec){
+        return Vecteur3D(x+sec.x, y+sec.y ,z+sec.z);
+    }
+   int produit( Vecteur3D& sec){
+        return (x*sec.x + y*sec.y + z*sec.z);
+    }
+    
+   bool coincide(const Vecteur3D& other) const {
+        return (x == other.x && y == other.y && z == other.z);
+    }
+    
+     double norme() const {
+        return sqrt(x * x + y * y + z * z);
+    }
+    
+     static Vecteur3D normax_value(const Vecteur3D& v1, const Vecteur3D& v2) {
+        return (v1.norme() > v2.norme()) ? v1 : v2;
+    }
+
+   
+    static void normax_address(const Vecteur3D& v1, const Vecteur3D& v2, Vecteur3D* result) {
+        *result = (v1.norme() > v2.norme()) ? v1 : v2;
+    }
+
+
+    static Vecteur3D& normax_reference(const Vecteur3D& v1, const Vecteur3D& v2, Vecteur3D& result) {
+        result = (v1.norme() > v2.norme()) ? v1 : v2;
+        return result;
+    }
+    
+};
+
+int main(){
+    Vecteur3D vec1(4,6,2);
+    Vecteur3D vec2(0,2,1);
+    vec1.afficher();
+    vec2.afficher();
+    
+    Vecteur3D Somme = vec1.Somme(vec2);
+    
+    int produit=vec1.produit(vec2);
+    
+    
+    
+   cout << "la somme des vecteurs :";
+   Somme.afficher();
+   cout << endl;
+   cout <<"le produit :"<<  produit << endl;
+   
+    bool coïncident = vec1.coincide(vec2);
+    cout << "Les vecteurs coïncident: " << (coïncident ? "Oui" : "Non") << endl;
+    
+    cout << "Norme du vecteur 1: " << vec1.norme() << endl;
+   cout << "Norme du vecteur 2: " << vec2.norme() << endl;
+   
+   Vecteur3D maxVal = Vecteur3D::normax_value(vec1, vec2);
+    cout << "Vecteur avec la plus grande norme (valeur): ";
+    maxVal.afficher();
+
+   
+    Vecteur3D maxAddr;
+    Vecteur3D::normax_address(vec1, vec2, &maxAddr);
+    cout << "Vecteur avec la plus grande norme (adresse): ";
+    maxAddr.afficher();
+
+
+    
+    Vecteur3D maxRef;
+    Vecteur3D::normax_reference(vec1, vec2, maxRef);
+   cout << "Vecteur avec la plus grande norme (référence): ";
+    maxRef.afficher();
+
+
+    
+ 
+    return 0;
+
+
+}
+
+exercice 5 :
+
+#include <iostream>
+using namespace std;
+class Test {
+public:
+    
+    static void call() {
+        ++comp;
+    }
+
+   
+    static int getCompteur() {
+        return comp;
+    }
+
+private:
+    static int comp;
+};
+
+
+int Test::comp = 0;
+
+int main() {
+    
+    Test::call();
+    Test::call();
+   
+     cout << "Nombre total d'appels de la méthode call: " << Test::getCompteur() << endl;
+
+    return 0;
+}
+
+exercice 6 :
+//fichier d'en tete
+
+#ifndef POINT_H
+#define POINT_H
+
+class Point {
+private:
+    float x; 
+    float y; 
+
+public:
+    
+    Point(float xCo, float yCo);
+
+    
+    void deplace(float aX, float aY);
+
+    
+    void affiche() const;
+};
+
+#endif 
+
+// fichier de definition
+#include <iostream>
+#include "Point.h"
+
+
+Point Point(float xCo, float yCo) : x(xCo), y(yCo) {}
+
+
+void Point deplace(float aX, float aY) {
+    x += aX;
+    y += aY;
+}
+
+
+void Point affiche() const {
+    cout << "Point(" << x << ", " << y << ")" << endl;
+}
+
+//fichier de test
+
+#include <iostream>
+#include "Point.h"
+
+int main() {
+    
+    Point p(2.0f, 6.2f);
+
+   
+    cout << "Coordonnées initiales du point : ";
+    p.affiche();
+    
+    p.deplace(1.5f, -4.0f);
+
+    cout << "Coordonnées après déplacement : ";
+    p.affiche();
+
+    return 0;
+}
+
+exercice 7 :
+#include<iostream>
+#include<list>
+
+
+using namespace std;
+
+class pile{
+    private:
+    list<int> element;
+    
+    public:
+    pile();
+    
+     void push(int val) {
+        element.push_back(val); 
+    }
+    
+    void pop() {
+        if (!element.empty()) {
+            element.pop_back(); 
+        } else {
+            cout << "La pile est vide! " << endl;
+        }
+    }
+    
+    void afficher()  {
+        for (auto it = element.begin(); it != element.end(); ++it) {
+            cout << "\t" << *it;
+        }
+        cout << "\n";
+    }
+    
+  
+};
+ pile :: pile(){}
+   
+int main(){
+    pile pile1,pile2;
+    
+    pile1.push(10);
+    pile1.push(20);
+    pile1.push(30);
+    
+    cout <<"elements of list 1  are :";
+    pile1.afficher();
+    
+    pile2.push(1);
+    pile2.push(2);
+    pile2.push(3);
+    
+    cout <<"elements of list 2  are :";
+    pile2.afficher();
+    
+    pile1.pop();
+    pile2.pop();
+    
+    cout <<"elements of list 1 after pop are :";
+    pile1.afficher();
+    
+    
+    cout <<"elements of list 2 after pop are :";
+    pile2.afficher();
+    
+    return 0;
+    
+}
+
+exercice 8 :
+
+#include <iostream>
+using namespace std;
+
+class Fichier {
+private:
+    char* P;      
+    size_t longueur; 
+
+public:
+    
+    Fichier() : P(nullptr), longueur(0) {}
+
+
+    void Creation(int taille) {
+        longueur = taille;
+        P = new char[longueur]; 
+        cout << longueur << " octets allouée." << endl;
+    }
+
+    
+    void Remplit() {
+        if (P != nullptr) {
+            for (size_t i = 0; i < longueur; ++i) {
+                P[i] = 'A'; 
+            }
+            cout << "Mémoire remplie." << endl;
+        } else {
+            cout << " impossible de remplir." << endl;
+        }
+    }
+
+    void Affiche() const {
+        if (P != nullptr) {
+            cout << "Contenu de la mémoire : ";
+            for (int i = 0; i < longueur; ++i) {
+                cout << P[i];
+            }
+            cout << endl;
+        } else {
+            cout << "Mémoire non allouée." << endl;
+        }
+    }
+
+    
+    ~Fichier() {
+        delete[] P; 
+        cout << "Mémoire libérée." << endl;
+    }
+};
+
+int main() {
+    
+    Fichier* fichier = new Fichier();
+
+   
+    fichier->creation(50);
+    fichier->Remplit();    
+    fichier->Affiche();    
+
+    
+    delete fichier;
+
+    return 0;
+}
+
+exercice 9 :
+
+#include <iostream>
+using namespace std;
+
+
+struct element {
+    int val;        
+    element* next;      
+
+   
+   element(int v) : val(v), next(nullptr) {}
+};
+
+
+class Liste {
+private:
+   element* tete; 
+
+public:
+    
+    Liste() : tete(nullptr) {}
+
+    
+    void Ajouter(int val) {
+        element* newelement = new element(val); 
+        newelement->next = tete;          
+        tete = newelement;                
+    }
+
+    void supprimer() {
+        if(tete == nullptr) {
+            cout << "\nla liste est vide rien a supprimer\n " ;
+        }
+        
+        element* temp = tete;        
+        tete = tete->next;  
+       delete temp;
+       cout <<"\n premier element supprime \n";
+    }
+    
+    
+
+    
+    void Afficher() const {
+        element* temp = tete;
+        cout << "Liste : ";
+        while (temp != nullptr) {
+            cout << temp->val << "  ";
+            temp = temp->next;
+        }
+       
+    }
+
+    
+};
+
+int main() {
+    Liste liste;
+
+    liste.Ajouter(40);
+    liste.Ajouter(30);
+    liste.Afficher();
+    liste.supprimer();
+    liste.Afficher();
+    
+    return 0;
+}
+
+execice 10 :
+
+#include <iostream>
+#include <string>
+
+using namespace std;
+void Afficher(string DateAndTime){
+    
+    if (DateAndTime.size() != 12) {
+        cout << "enter 12 ! caracters." << endl;
+        
+    }else {
+        cout <<"Date :" << DateAndTime.substr(0,2) <<"/" << DateAndTime.substr(2,2) << "/" <<DateAndTime.substr(4,4) << "\nTime :" << DateAndTime.substr(8,2) <<"h"<<DateAndTime.substr(10,2);
+    }
+}
+int main(){
+    
+    string DateAndTime;
+    
+    cout <<" enter a string of 12 numbers :" ;
+    cin >> DateAndTime;
+    Afficher(DateAndTime);
+    
+    
+   
+
+    return 0;
+}
+
+exercice 11:
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Traitement {
+private:
+    vector<int> numbers;
+
+public:
+    void Initialise() {
+        int count = 0;
+        while (count < 15) {
+            
+            int N;
+            do{
+            cout << "Entrez un nombre pair et non nul : ";
+            cin >> N;
+            if (cin.fail()) { //pour forcer l'utilisateur a entrer un entier 
+            cout << "Invalid." << endl;
+            cin.clear();     
+            cin.ignore(1000, '\n'); 
+        } else {
+            break;           
+        }
+            }while(true);
+               
+                if (N % 2 == 0 && N != 0) {
+                    numbers.push_back(N);
+                    count++;
+                } else {
+                    cout << " Le nombre doit être pair et non nul." << endl; 
+                }
+        }
+    }
+    //fonction d'affichage par recursivite
+    void show(int index = 0) const {
+        if (index >= numbers.size()) return; 
+        cout << numbers[index] << " ";
+        show(index + 1); 
+    }
+    //declaration des fonction amies
+    friend double moyenne(const Traitement& t);
+    friend double median(const Traitement& t);
+};
+
+
+double moyenne(const Traitement& t) {
+    if (t.numbers.empty()) return 0; //si le vector est vide
+
+    int sum = 0;
+    for (int num : t.numbers) {
+        sum += num;
+    }
+    return (sum) / t.numbers.size();
+}
+
+
+double median(const Traitement& t) {
+    if (t.numbers.empty()) return 0; //si le vector est vide
+    vector<int>  vec = t.numbers;
+    int n = vec.size();
+    for (int i = 0; i < n - 1; i++) { //pour ranger les nombres dans l'ordre croissant afin de determiner la mediane
+        for (int j = 0; j < n - i - 1; j++) {
+            if (vec[j] > vec[j + 1]) {
+                int temp = vec[j];
+                vec[j] = vec[j + 1];
+                vec[j + 1] = temp;
+            }
+        }
+    }
+    
+      return vec[6];
+    
+}
+
+int main() {
+    Traitement traitement;
+    traitement.Initialise();
+
+    cout << "Les nombres du vecteur sont  les suivants: ";
+    traitement.show();
+    cout << endl;
+
+    cout << "Moyenne : " << moyenne(traitement) << endl;
+    cout << "Médiane : " << median(traitement) << endl;
+     traitement.show();
+    return 0;
+}
+
+
+
+    
